@@ -3,10 +3,12 @@
 set -e
 
 if [[ "$1" == -* ]]; then
-	set -- fluentd "$@"
+	set -- /home/fluent/bin/fluentd "$@"
 fi
 
-sed -i "s|ES_HOST|$ES_HOST|" /fluentd/etc/fluent.conf
-sed -i "s|ES_PORT|$ES_PORT|" /fluentd/etc/fluent.conf
+sed -i "s|ES_HOST|$ES_HOST|" /etc/fluent/fluent.conf
+sed -i "s|ES_PORT|$ES_PORT|" /etc/fluent/fluent.conf
 
-exec "$@" -c /fluentd/etc/fluent.conf -p /fluentd/plugins $FLUENTD_OPT
+su - fluent
+
+exec "$@" -c /etc/fluent/fluent.conf -p /fluentd/plugins $FLUENTD_OPT
